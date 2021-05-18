@@ -2,12 +2,12 @@
 
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (!hash_equals($_SESSION['_token'], $_POST['_token'])){
-        echo 'Invalid CSRF token';
-        die();
-    }else{
-        unset($_SESSION['_token']);
-    }
+        if (!hash_equals($_SESSION['_token'], $_POST['_token'])){
+            echo 'Invalid CSRF token';
+            die();
+        }else{
+            unset($_SESSION['_token']);
+        }
     }
 
     if (empty($_SESSION['_token'])) {
