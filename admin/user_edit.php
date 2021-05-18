@@ -14,16 +14,16 @@
     if($_POST) {
         if(empty($_POST['name']) || empty($_POST['email']) ||  empty($_POST['address']) || empty($_POST['phone'])) {
             if(empty($_POST['name'])) {
-                $nameError = "Name cannot be null";
+                $nameError = "Name is required";
             }
             if(empty($_POST['email'])) {
-                $emailError = "Email cannot be null";
+                $emailError = "Email is required";
             }
             if(empty($_POST['address'])) {
-                $addressError = "Address cannot be null";
+                $addressError = "Address is required";
             }
             if(empty($_POST['phone'])) {
-                $phoneError = "Phone number cannot be null";
+                $phoneError = "Phone number is required";
             }
         } elseif(!empty($_POST['password']) && strlen($_POST['password']) < 4) {
             $passError = "Password must be 4 characters or 4 digits at least";
@@ -83,11 +83,11 @@
 
               <!-- /.card-header -->
               <div class="card-body">
-              <form action="user_edit.php" method="post">
+              <form action="" method="post">
                     <input type="hidden" name="_token" value="<?php echo $_SESSION['_token'] ?>">
+                    <input type="hidden" name="id" value="<?php echo $result[0]['id'] ?>">
                     <div class="form-group">
-                        <input type="hidden" name="id" value="<?php echo $result[0]['id'] ?>">
-                        <label for="">Name</label><p style="color:red"><?php echo empty($nameError) ? '' : '*'.$nameError; ?></p>
+                       <label for="">Name</label><p style="color:red"><?php echo empty($nameError) ? '' : '*'.$nameError; ?></p>
                         <input type="text" name="name" class="form-control" value="<?php echo escape($result[0]['name'])?>">
                     </div>
 

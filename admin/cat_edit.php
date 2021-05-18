@@ -49,10 +49,10 @@
           <div class="col-md-12">
             <div class="card">
               <div class="card-body">
-                <form action="cat_edit.php" method="post" enctype="multipart/form-data"> 
+                <form action="" method="post" enctype="multipart/form-data"> 
                   <input name="_token" type="hidden" value="<?php echo $_SESSION['_token']; ?>">
+                  <input type="hidden" name="id" value="<?php echo escape($result[0]['id']) ?>">
                     <div class="form-group">
-                        <input type="hidden" name="id" value="<?php echo escape($result[0]['id']) ?>">
                         <label for="">Name</label><p style="color:red"><?php echo empty($nameError) ? '' : '*'.$nameError; ?></p>
                         <input type="text" name="name" class="form-control" value="<?php echo escape($result[0]['name']) ?>">
                     </div>

@@ -37,22 +37,26 @@ scratch. This page gets rid of all links and provides the needed markup only.
     ?>
 
     <!-- SEARCH FORM -->
-    <form class="form-inline ml-3" method="post"
-      <?php if($page == 'index.php'): ?>
-        action = "index.php"
-        <?php elseif($page == 'category.php'): ?>
-          action = "category.php"
-        <?php elseif($page == 'user_list.php'): ?>
-          action = "user_list.php";
-      <?php endif; ?>       
-    >  
-      <input name="_token" type="hidden" value="<?php echo $_SESSION['_token']; ?>">
-      <div class="input-group input-group-sm">
-        <input class="form-control form-control-navbar" name="search" type="search" placeholder="Search" aria-label="Search">
-        <div class=$_SESSION['username']"input-group-append">
-        </div>
-      </div>
+    <?php if($page != 'order_list.php' && $page != 'order_detail.php'): ?>
+      <form class="form-inline ml-3" method="post"
+        <?php if($page == 'index.php'): ?>
+          action = "index.php"
+          <?php elseif($page == 'category.php'): ?>
+            action = "category.php"
+          <?php elseif($page == 'user_list.php'): ?>
+            action = "user_list.php";
+        <?php endif; ?>       
+        >  
+          <input name="_token" type="hidden" value="<?php echo $_SESSION['_token']; ?>">
+          <div class="input-group input-group-sm">
+            <input class="form-control form-control-navbar" name="search" type="search" placeholder="Search" aria-label="Search">
+            <div class=$_SESSION['username']"input-group-append">
+            </div>
+          </div>
     </form>
+    <?php endif; ?>
+    
+      
 
     <!-- Right navbar links -->
    
@@ -104,6 +108,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
               <i class="nav-icon fas fa-user"></i>
               <p>
                 User
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="order_list.php" class="nav-link">
+              <i class="fab fa-first-order-alt"></i>
+              <p>
+                Order
               </p>
             </a>
           </li>
