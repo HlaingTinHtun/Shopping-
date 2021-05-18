@@ -22,8 +22,10 @@
            if(empty($_POST['email'])) {
                $emailError = "Email is required";
            }
-           if(empty($_POST['password'])) {
-            $passError = "Password is required";
+            if(empty($_POST['password'])) {
+                $passError = "Password is required";
+            } elseif(strlen($_POST['password']) < 4) {
+                $passError = "Password must be at least 4 characters or digits";
             }
             if(empty($_POST['phone'])) {
                 $phoneError = "Phone is required";
