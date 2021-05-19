@@ -8,6 +8,10 @@
     header('location: login.php');
   }
 
+  if($_SESSION['role'] != 1) {
+    header('location: login.php');
+  }
+
   // set cookie
   if(!empty($_POST['search'])) {
     setcookie('search', $_POST['search'], time() + (86400 * 30), "/"); // 86400 = 1 day

@@ -8,6 +8,10 @@
     header('location: login.php');
     }
 
+    if($_SESSION['role'] != 1) {
+      header('location: login.php');
+    }
+
 
     // pagination
     if(!empty($_GET['pageno'])) {

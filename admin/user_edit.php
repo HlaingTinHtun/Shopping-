@@ -99,7 +99,7 @@
                     <div class="form-group">
                         <label for="">Password</label><p style="color:red"><?php echo empty($passError) ? '' : '*'.$passError; ?></p>
                         <span style="font-size:10px">The password has already exists</span>
-                        <input type="password" name="password" class="form-control" value="<?php echo escape($result[0]['password']) ?>">
+                        <input type="password" name="password" class="form-control" value="<?php  escape($result[0]['password']) ?>">
                     </div>
 
                     <div class="form-group">

@@ -9,6 +9,10 @@
         header('location: login.php');
     }
 
+    if($_SESSION['role'] != 1) {
+      header('location: login.php');
+    }
+
 
     if($_POST) {
        if(empty($_POST['name']) || empty($_POST['description'])) {

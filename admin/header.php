@@ -36,29 +36,28 @@ scratch. This page gets rid of all links and provides the needed markup only.
           $page = end($link_array);   //end link segement 
     ?>
 
-    <!-- SEARCH FORM -->
-    <?php if($page != 'order_list.php' && $page != 'order_detail.php'): ?>
-      <form class="form-inline ml-3" method="post"
-        <?php if($page == 'index.php'): ?>
-          action = "index.php"
-          <?php elseif($page == 'category.php'): ?>
-            action = "category.php"
-          <?php elseif($page == 'user_list.php'): ?>
-            action = "user_list.php";
-        <?php endif; ?>       
-        >  
-          <input name="_token" type="hidden" value="<?php echo $_SESSION['_token']; ?>">
-          <div class="input-group input-group-sm">
-            <input class="form-control form-control-navbar" name="search" type="search" placeholder="Search" aria-label="Search">
-            <div class=$_SESSION['username']"input-group-append">
+    <?php if($page == 'index.php' || $page == 'category.php' || $page == 'user_list.php'): ?>
+      <!-- SEARCH FORM -->
+      <?php if($page != 'order_list.php' && $page != 'order_detail.php'): ?>
+        <form class="form-inline ml-3" method="post"
+          <?php if($page == 'index.php'): ?>
+            action = "index.php"
+            <?php elseif($page == 'category.php'): ?>
+              action = "category.php"
+            <?php elseif($page == 'user_list.php'): ?>
+              action = "user_list.php";
+          <?php endif; ?>       
+          >  
+            <input name="_token" type="hidden" value="<?php echo $_SESSION['_token']; ?>">
+            <div class="input-group input-group-sm">
+              <input class="form-control form-control-navbar" name="search" type="search" placeholder="Search" aria-label="Search">
+              <div class=$_SESSION['username']"input-group-append">
+              </div>
             </div>
-          </div>
-    </form>
+      </form>
+      <?php endif; ?>
     <?php endif; ?>
-    
-      
-
-    <!-- Right navbar links -->
+<!-- Right navbar links -->
    
   </nav>
   <!-- /.navbar -->

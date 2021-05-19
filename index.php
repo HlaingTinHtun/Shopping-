@@ -1,6 +1,16 @@
 <?php 
 	
 	require 'config/config.php';
+
+	// set cookie
+	if(!empty($_POST['search'])) {
+		setcookie('search', $_POST['search'], time() + (86400 * 30), "/"); // 86400 = 1 day
+	  } else {
+		if(empty($_GET['pageno'])) {
+		  unset($_COOKIE['search']); 
+		  setcookie('search', null, -1, '/'); 
+		}
+	  }
 	
 	if(!empty($_GET['pageno'])) {
 		$pageno = $_GET['pageno'];
@@ -8,18 +18,30 @@
 		$pageno = 1;
 	}
 
-	$numofrecs = 6;
+	$numofrecs = 1;
 	$offset = ($pageno -1) * $numofrecs;
 
 	if(empty($_POST['search']) && empty($_COOKIE['search'])) {
-		$stmt = $pdo->prepare("SELECT * FROM products ORDER BY id DESC");
-		$stmt -> execute();
-		$raw_result = $stmt->fetchAll(); 
-		$total_pages = ceil(count($raw_result)/$numofrecs);
+		if(!empty($_GET['category_id'])) {
+			$category_id = $_GET['category_id'];
+			$stmt = $pdo->prepare("SELECT * FROM products WHERE category_id=$category_id ORDER BY id DESC");
+			$stmt->execute();
+			$raw_result = $stmt->fetchAll();
+			$total_pages = ceil(count($raw_result)/$numofrecs);
 
-		$stmt = $pdo->prepare("SELECT * FROM products ORDER BY id DESC LIMIT $offset,$numofrecs");
-		$stmt -> execute();
-		$result = $stmt->fetchAll(); 
+			$stmt = $pdo->prepare("SELECT * FROM products WHERE category_id=$category_id ORDER BY id DESC LIMIT $offset,$numofrecs");
+			$stmt -> execute();
+			$result = $stmt->fetchAll(); 			
+		} else {
+			$stmt = $pdo->prepare("SELECT * FROM products ORDER BY id DESC");
+			$stmt -> execute();
+			$raw_result = $stmt->fetchAll(); 
+			$total_pages = ceil(count($raw_result)/$numofrecs);
+
+			$stmt = $pdo->prepare("SELECT * FROM products ORDER BY id DESC LIMIT $offset,$numofrecs");
+			$stmt -> execute();
+			$result = $stmt->fetchAll(); 
+        }
 	} else {
 		$searchKey = (!empty($_POST['search'])) ? $_POST['search'] : $_COOKIE['search'];
 		$stmt = $pdo->prepare("SELECT * FROM products WHERE name LIKE '%$searchKey%'  ORDER BY id DESC");
@@ -42,17 +64,16 @@
 				<div class="sidebar-categories">
 					<div class="head">Browse Categories</div>
 						<ul class="main-categories">
+							<?php
+								$catStmt = $pdo->prepare("SELECT * FROM categories ORDER BY id DESC");
+								$catStmt->execute();
+								$catResult = $catStmt->fetchAll();
+							?>
 							<li class="main-nav-list">
-								<?php
-									$catStmt = $pdo->prepare("SELECT * FROM categories ORDER BY id DESC");
-									$catStmt->execute();
-									$catResult = $catStmt->fetchAll();
-								?>
-
-								<?php foreach($catResult as $value): ?>
-									<a data-toggle="collapse" href="#" aria-expanded="false" aria-controls="fruitsVegetable"><span
+								<?php foreach($catResult as $key => $value): ?>
+									<a href="index.php?category_id=<?php echo $value['id'] ?>" aria-expanded="false" aria-controls="fruitsVegetable"><span
 									class="lnr lnr-arrow-right"></span><?php echo escape($value['name']) ?></span></a>
-								<?php endforeach; ?>	
+								<?php endforeach; ?>		
 								
 							</li>
 						</ul>
@@ -92,7 +113,7 @@
 													<span class="ti-bag"></span>
 													<p class="hover-text">add to bag</p>
 												</a>
-												<a href="" class="social-info">
+												<a href="product_detail.php?id=<?php echo $value['id'] ?>" class="social-info">
 													<span class="lnr lnr-move"></span>
 													<p class="hover-text">view more</p>
 												</a>
