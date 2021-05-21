@@ -1,0 +1,6 @@
+customer
+
+index.php -> product listings, category listings, add to cart, product-detail
+addtocart -> total cart, clear cart item
+
+sale_order -> 

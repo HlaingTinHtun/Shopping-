@@ -1,3 +1,59 @@
+<?php
+
+	session_start();
+
+	require 'config/config.php';
+	require 'config/common.php';
+
+	if(!empty($_SESSION['cart'])) {
+		$userId = $_SESSION['user_id'];
+		$total = 0;  //total => total price
+
+		foreach($_SESSION['cart'] as $key => $qty) {
+			$id = str_replace('id','',$key);
+			$stmt = $pdo->prepare("SELECT * FROM products WHERE id=".$id);
+			$stmt -> execute();
+			$result = $stmt->fetch(PDO::FETCH_ASSOC);
+			$total += $result['price'] * $qty;
+		}
+
+		//insert sale_orders table
+		$stmt = $pdo->prepare("INSERT INTO sale_orders (user_id, total_price, order_date) VALUES (:user_id, :total_price, :order_date)");
+		$result = $stmt->execute(
+			array(':user_id'=>$userId, ':total_price'=>$total, ':order_date'=>date('Y-m-d H:i:s'))
+		);
+
+		//insert sale_order_detail
+		if($result) {
+			$saleOrderId = $pdo->lastInsertId();
+			foreach($_SESSION['cart'] as $key => $qty) {
+				$id = str_replace('id','',$key);  		//$id => product_id
+
+				$stmt = $pdo->prepare("INSERT INTO sale_orders_detail (sale_order_id, product_id, quantity, order_date) VALUES (:sale_order_id, :product_id, :quantity, :order_date)");
+				$result = $stmt -> execute(
+					array(':sale_order_id'=>$saleOrderId, ':product_id'=>$id, ':quantity'=>$qty, ':order_date'=>date('Y-m-d H:i:s'))
+				);
+				//update quantity
+				$qtyStmt = $pdo->prepare("SELECT quantity FROM products WHERE id=".$id);
+				$qtyStmt->execute();
+				$qtyResult = $qtyStmt->fetch(PDO::FETCH_ASSOC);
+
+				$updateQty = $qtyResult['quantity'] - $qty;
+
+				$stmt = $pdo->prepare("UPDATE products SET quantity=:quantity WHERE id=:id");
+				$result = $stmt -> execute(
+					array(':quantity'=>$updateQty, ':id'=>$id)
+				);
+			}
+			unset($_SESSION['cart']);
+		}
+	}
+
+?>
+
+
+
+
 <!DOCTYPE html>
 <html lang="zxx" class="no-js">
 
