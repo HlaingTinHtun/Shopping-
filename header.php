@@ -2,6 +2,10 @@
 	session_start();
 	require 'config/common.php';
 
+	if(empty($_SESSION['user_id']) && empty($_SESSION['logged_in'])) {
+		header('location: login.php');
+	}
+
 	// cart number
 	$cart = 0;
 	if(!empty($_SESSION['cart'])) {
@@ -87,8 +91,8 @@
 		<div class="container">
 			<div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
 				<div class="col-first">
-					<h1>Welcome</h1>
-
+					<h1>Welcome <?php echo escape($_SESSION['username']) ?></h1>
+					<a href="logout.php" class="primary-btn" style="color: black; background: darkturquoise;">Logout</a>
 				</div>
 			</div>
 		</div>
