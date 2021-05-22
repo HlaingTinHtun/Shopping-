@@ -84,6 +84,8 @@
 
 <script>
     $(document).ready(function() {
-        $('#j-table').DataTable();
+        $('#j-table').DataTable({
+          "pagingType": "full_numbers"
+        });
     } );
 </script>

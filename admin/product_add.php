@@ -17,50 +17,60 @@
     if($_POST) {
         if(empty($_POST['name']) || empty($_POST['description']) || empty($_POST['category']) || empty($_POST['price']) || empty($_POST['quantity']) || empty($_FILES['image'])) {
             if(empty($_POST['name'])) {
-            $nameError = "Name is required";
+                $nameError = "Name is required";
             }
             if(empty($_POST['description'])) {
-            $descError = "Description is required";
+                $descError = "Description is required";
             }
             if(empty($_POST['category'])) {
-            $catError = "Category is required";
+                $catError = "Category is required";
             }
             if(empty($_POST['price'])) {
-            $priceError = "Price is required";
-            } elseif(is_numeric($_POST['price'])) {
-            $priceError = "Price must be integer value";
+                $priceError = "Price is required";
+            } elseif(is_numeric($_POST['price']) != 1) {
+                $priceError = "Price must be integer value";
             }
-            if(empty($_POST['quantity'])) {
-            $qtyError = "Quantity is required";
+            if(empty($_POST['quantity']) != 1) {
+                $qtyError = "Quantity is required";
             } elseif(is_numeric($_POST['quantity'])) {
-            $qtyError = "Quantity must be integer value";
+                $qtyError = "Quantity must be integer value";
             }
 
         } else {
-            $file = 'images/'.($_FILES['image']['name']);
-            $imageType = pathinfo($file, PATHINFO_EXTENSION);
+            if(is_numeric($_POST['price']) != 1) {
+                $priceError = "Price must be integer value";
+            }
+            if(is_numeric($_POST['quantity']) != 1) {
+                $qtyError = "Quantity must be integer value";
+            }
 
-            if($imageType != 'jpg' && $imageType != 'jpeg' && $imageType != 'png') {
-            echo "<script>alert('Images must be jpg,jpeg or png');</script>";
-            } else {
-                $name = $_POST['name'];
-                $desc = $_POST['description'];
-                $category = $_POST['category'];
-                $price = $_POST['price'];
-                $quantity = $_POST['quantity'];
-                $image = $_FILES['image']['name'];
+            if($priceError == '' && $qtyError == '') {
+                $file = 'images/'.($_FILES['image']['name']);
+                $imageType = pathinfo($file, PATHINFO_EXTENSION);
 
-                move_uploaded_file($_FILES['image']['tmp_name'], $file);
+                if($imageType != 'jpg' && $imageType != 'jpeg' && $imageType != 'png') {
+                echo "<script>alert('Images must be jpg,jpeg or png');</script>";
+                } else {
+                    $name = $_POST['name'];
+                    $desc = $_POST['description'];
+                    $category = $_POST['category'];
+                    $price = $_POST['price'];
+                    $quantity = $_POST['quantity'];
+                    $image = $_FILES['image']['name'];
 
-                $stmt = $pdo->prepare("INSERT INTO products (name, description, category_id, price, quantity, image) VALUES (:name, :description, :category_id, :price, :quantity, :image)");
-                $result = $stmt->execute(
-                    array(':name'=>$name, ':description'=>$desc, ':category_id'=>$category, ':price'=>$price, ':quantity'=>$quantity, ':image'=>$image)
-                );
+                    move_uploaded_file($_FILES['image']['tmp_name'], $file);
 
-                if($result) {
-                    echo "<script>alert('Product is added successfully');window.location.href='index.php';</script>";
+                    $stmt = $pdo->prepare("INSERT INTO products (name, description, category_id, price, quantity, image) VALUES (:name, :description, :category_id, :price, :quantity, :image)");
+                    $result = $stmt->execute(
+                        array(':name'=>$name, ':description'=>$desc, ':category_id'=>$category, ':price'=>$price, ':quantity'=>$quantity, ':image'=>$image)
+                    );
+
+                    if($result) {
+                        echo "<script>alert('Product is added successfully');window.location.href='index.php';</script>";
+                    }
                 }
             }
+            
         }
     }
 

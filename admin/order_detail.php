@@ -54,25 +54,27 @@
                 <a href="order_list.php" type="button" class="btn btn-secondary">Back</a>
                     <table class="table table-bordered table-dark mt-3">
                         <thead>
-                            <td>id</td>
-                            <td>Product</td>
-                            <td>Quantity</td>
-                            <td>Order Date</td>
+                            <th>id</th>
+                            <th>Product</th>
+                            <th>Quantity</th>
+                            <th>Order Date</th>
                         </thead>
                         <tbody>
                             <?php if($result): ?>
                                 <?php foreach($result as $value): ?>
+                                  <?php $i = 1 ?>
                                     <?php
                                         $proStmt = $pdo->prepare("SELECT * FROM products WHERE id=".$value['product_id']);
                                         $proStmt->execute();
                                         $proResult = $proStmt->fetchAll();
                                     ?>
                                     <tr>
-                                    <td><?php echo escape($value['id']) ?></td>
+                                    <td><?php echo $i ?></td>
                                     <td><?php echo escape($proResult[0]['name']) ?></td>
                                     <td><?php echo escape($value['quantity']) ?></td>
                                     <td><?php echo escape(date('d-m-Y',strtotime($value['order_date']))) ?></td>
                                     </tr>
+                                  <?php $i++ ?>
                                 <?php endforeach; ?>    
                                 <?php else: ?>
                             <?php endif; ?>   
@@ -81,7 +83,17 @@
                     </table>
                 <br>
                 <!-- pagination -->
-                
+                <nav aria-label="Page navigation example" style="float:right">
+                  <ul class="pagination">
+                    <li class="page-item"><a class="page-link" href="?id=<?php echo $_GET['id'] ?>&pgaeno=1">First</a></li>
+                    <li class="page-item <?php if($pageno <= 1 ) {echo 'disabled';} ?>">
+                      <a class="page-link" href="<?php if($pageno <= 1) {echo '#';} else {echo "?id=".$_GET['id']."&pageno=".($pageno-1); } ?>">Previous</a></li>
+                    <li class="page-item"><a class="page-link" href="#"><?php echo $pageno ?></a></li>
+                    <li class="page-item <?php if($pageno >= $total_pages) {echo 'disabled';} ?>">
+                      <a class="page-link" href="<?php if($pageno >= $total_pages) {echo '#';} else {echo "?id=".$_GET['id']."&pageno=".($pageno+1);} ?>">Next</a></li>
+                    <li class="page-item"><a class="page-link" href="?id=<?php echo $_GET['id'] ?>&pageno=<?php echo $total_pages ?>">Last</a></li>
+                  </ul>
+                </nav>
 
               </div>
             </div>
