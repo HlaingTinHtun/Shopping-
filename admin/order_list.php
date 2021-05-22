@@ -53,13 +53,14 @@
               <div class="card-body">
                 <table class="table table-bordered table-dark mt-3">
                   <thead>
-                    <td>id</td>
-                    <td>User</td>
-                    <td>Total Price</td>
-                    <td>Actions</td>
+                    <th>id</th>
+                    <th>User</th>
+                    <th>Total Price</th>
+                    <th>Actions</th>
                   </thead>
                   <tbody>
                     <?php if($result): ?>
+                      <?php $i = 1 ?>
                         <?php foreach($result as $value): ?>
                             <?php
                                 $userStmt = $pdo->prepare("SELECT * FROM users WHERE id=".$value['user_id']);
@@ -67,13 +68,14 @@
                                 $userResult = $userStmt->fetchAll();
                             ?>
                             <tr>
-                              <td><?php echo escape($value['id']) ?></td>
+                              <td><?php echo $i ?></td>
                               <td><?php echo escape($userResult[0]['name']) ?></td>
-                              <td><?php echo escape($value['total_price']) ?></td>
+                              <td><?php echo escape('$ ' .$value['total_price']) ?></td>
                               <td>
                                   <a href="order_detail.php?id=<?php echo $value['id'] ?>" type="button" class="btn btn-success">View</a>
                               </td>
                             </tr>
+                          <?php $i++  ?>
                         <?php endforeach; ?>    
                         <?php else: ?>
                     <?php endif; ?>   

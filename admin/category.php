@@ -64,16 +64,17 @@
                 <a href="cat_add.php" type="button" class="btn btn-primary">Create Category</a>
                 <table class="table table-bordered table-dark mt-3">
                   <thead>
-                    <td>id</td>
-                    <td>Name</td>
-                    <td>Description</td>
-                    <td>Actions</td>
+                    <th>id</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Actions</th>
                   </thead>
                   <tbody>
                     <?php if($result): ?>
+                      <?php $i = 1 ?>
                         <?php foreach($result as $value): ?>
                             <tr>
-                              <td><?php echo escape($value['id']) ?></td>
+                              <td><?php echo $i ?></td>
                               <td><?php echo escape($value['name']) ?></td>
                               <td><?php echo escape(substr($value['description'],0,50)) ?></td>
                               <td>
@@ -81,6 +82,7 @@
                                   <a href="cat_delete.php?id=<?php echo $value['id'] ?>" type="button" class="btn btn-danger">Delete</a>
                               </td>
                             </tr>
+                            <?php $i++ ?>
                         <?php endforeach; ?>    
                         <?php else: ?>
                     <?php endif; ?>   

@@ -61,17 +61,18 @@
                 <a href="user_add.php" type="button" class="btn btn-primary">Create New User</a>
                 <table class="table table-bordered table-dark mt-3">
                   <thead>
-                    <td>id</td>
-                    <td>Name</td>
-                    <td>Email</td>
-                    <td>Role</td>
-                    <td>Actions</td>
+                    <th>id</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Actions</th>
                   </thead>
                   <tbody>
                     <?php if($result): ?>
+                      <?php $i = 1 ?>
                             <?php foreach($result as $value): ?>
                                 <tr>
-                                <td><?php echo escape($value['id']) ?></td>
+                                <td><?php echo $i ?></td>
                                 <td><?php echo escape($value['name']) ?></td>
                                 <td><?php echo escape($value['email']) ?></td>
                                 <td><?php echo escape($value['role'] == 1 ? 'admin' : 'user') ?></td>
@@ -80,6 +81,7 @@
                                     <a href="user_delete.php?id=<?php echo $value['id'] ?>" type="button" class="btn btn-danger">Delete</a>
                                 </td>
                                 </tr>
+                                <?php $i++ ?>
                             <?php endforeach; ?>    
                             <?php else: ?>
                         <?php endif; ?>  
